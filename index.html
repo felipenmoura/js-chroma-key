@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">        var _gaq = _gaq || [];        _gaq.push(['_setAccount', 'UA-1270869-17']);        _gaq.push(['_setDomainName', '.felipenmoura.org']);        _gaq.push(['_trackPageview']);        (function() {        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);        })();    </script>
+        <style type="text/css">
+            canvas{
+                display: block;
+                border: solid 1px red;
+                background-image: url(bg1.png);
+                background-size: 100% 100%;
+                margin: auto;
+            }
+            video{
+                border: solid 1px red;
+            }
+            body{
+                background-color: appworkspace;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div style="text-align: center;">
+            <input type="button" value="Start" onclick="window.ck.start();" /><br/>
+            <video id="video" autoplay="autoplay" style="position: absolute; top: -999px;" width="360" height="270"></video>
+            <canvas id="canvas" width="360" height="270"></canvas>
+            <br/><br/>
+            <!--<input id="range" type="range" value="100" min="10" max="255" />-->
+            <input id="range" type="range" value="100" min="0" max="255" />
+        </div>
+        <script>
+            
+            
+            window.ck= (function(_d){
+    
+    var _video= _d.getElementById('video'),
+        _canvas= _d.getElementById('canvas'),
+        _ctx= _canvas.getContext('2d'),
+        _n= navigator,
+        _w= window,
+        _width= 0,
+        _height= 0,
+        _tmpCtx     = _d.createElement('canvas'),
+        _range      = 80,
+        _colors     = [0, 0, 200];
+    
+    _tmpCtx.width= _canvas.offsetWidth;
+    _tmpCtx.height= _canvas.offsetHeight;
+    
+    _tmpCtx= _tmpCtx.getContext('2d');
+    
+    var _videoPlaying= function(event){
+        
+        var frame= '',
+            data= null,
+            i= 0,
+            l,
+            r, g, b;
+        
+        if(!_width){
+            _width= _video.offsetWidth;
+            _height= _video.offsetHeight;
+        }
+        
+        _tmpCtx.drawImage(_video, 0, 0, _width, _height);
+        
+        frame= _tmpCtx.getImageData(0, 0, _width, _height);
+        data= frame.data;
+        
+        l= data.length/4;
+        for(; i<l; i++){
+            r= data[i*4];
+            g= data[i*4+1];
+            b= data[i*4+2];
+            
+            if(Math.abs(r-_colors[0]) < 250-_range
+                &&
+               Math.abs(g-_colors[1]) < 250-_range
+                &&
+               Math.abs(b-_colors[2]) < 250-_range)
+            {
+                frame.data[i*4+3]= 0;
+            }
+            
+        }
+        
+        _ctx.putImageData(frame, 0, 0);
+    };
+    
+    var _videoClick= function(evt){
+        var line= evt.offsetY,
+            col= evt.offsetX,
+            frame= _ctx.getImageData(col, line, 1, 1),
+            px= [frame.data[0], frame.data[1], frame.data[2]];
+        _colors= px;
+    };
+    
+    var _constructor= function(){
+        _w.URL= _w.URL || _w.webkitURL;
+        _n.getUserMedia= _n.getUserMedia||_n.webkitGetUserMedia||_n.mozGetUserMedia||false;
+        
+        if(_n.getUserMedia){
+            _n.getUserMedia({
+                audio: false,
+                video: true
+            }, function(stream){
+                try{
+                    stream= _w.URL.createObjectURL(stream);
+                }catch(e){
+                }
+                
+                _video.src= stream;
+                _video.play();
+                
+                _canvas.addEventListener('click', _videoClick);
+                setInterval(_videoPlaying, 120);
+                _video.style.visibility= 'hidden';
+                
+                _d.getElementById('range').addEventListener('change', function(){
+                    _range= 255 - this.value;
+                });
+                
+            }, function(){
+                //alert('nao permitiu');
+            });
+        }else{
+            alert('falhou');
+        }
+        
+    }
+    
+    return {
+        start: _constructor
+    };
+    
+})(document);
+            
+            
+        </script>
+        
+    </body>
+</html>
