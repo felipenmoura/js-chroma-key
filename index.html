@@ -64,7 +64,6 @@
         
         var frame= '',
             data= null,
-            i= 0,
             l,
             r, g, b;
         
@@ -79,10 +78,10 @@
         data= frame.data;
         
         l= data.length/4;
-        for(; i<l; i++){
-            r= data[i*4];
-            g= data[i*4+1];
-            b= data[i*4+2];
+        while(l--){
+            r= data[l*4];
+            g= data[l*4+1];
+            b= data[l*4+2];
             
             if(Math.abs(r-_colors[0]) < 250-_range
                 &&
@@ -90,7 +89,7 @@
                 &&
                Math.abs(b-_colors[2]) < 250-_range)
             {
-                frame.data[i*4+3]= 0;
+                frame.data[l*4+3]= 0;
             }
             
         }
