@@ -20,7 +20,6 @@ window.ck= (function(_d){
         
         var frame= '',
             data= null,
-            // criamos algumas variáveis como helpers
             l,
             r, g, b;
         
@@ -29,13 +28,23 @@ window.ck= (function(_d){
             _height= _video.offsetHeight;
         }
         
-        // desenhamos no canvas virtual (melhor performance para o processamento)
         _tmpCtx.drawImage(_video, 0, 0, _width, _height);
         
-        // frame, torna-se os dados da imagem no canvas(pixel a pixel)
         frame= _tmpCtx.getImageData(0, 0, _width, _height);
         
-        // jogamos estes pixels no canvas real
+        // coletamos as informações dos pixels do canvas
+        data= frame.data;
+        
+        // cada pixel, possui 4 bites, e estão em uma lista única
+        l= data.length/4;
+        while(l--){
+            r= data[l*4];
+            g= data[l*4+1];
+            b= data[l*4+2];
+            // a= data[l*4+3]; // poderíamos usar o alpha, mas não é o caso neste momento
+            // aqui, r, g e b vao de 0 a 255
+        }
+        
         _ctx.putImageData(frame, 0, 0);
         
     };
