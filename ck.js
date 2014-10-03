@@ -9,19 +9,28 @@ window.ck= (function(_d){
         _height = 0;
     
     var _constructor= function(){
-        // verificamos qual acesso ao userMedia está disponível
+        
+        // um objecto URL
+        _w.URL= _w.URL || _w.webkitURL;
+        
         _n.getUserMedia= _n.getUserMedia||_n.webkitGetUserMedia||_n.mozGetUserMedia||false;
         
-        // se houver suporte...
         if(_n.getUserMedia){
             
-            // solicitamos o uso da mídia
             _n.getUserMedia({
                 audio: false,
                 video: true
             }, function(stream){
                 
-                // usaremos o stream aqui
+                // transformamos o stream em um objeto URL
+                try{
+                    stream= _w.URL.createObjectURL(stream);
+                }catch(e){}
+                
+                // e o passamos para o src do elemento de vídeo
+                _video.src= stream;
+                // agora, podemos dar play no vídeo
+                _video.play();
                 
             }, function(){
                 alert('O usuário não permitiu!');
