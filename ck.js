@@ -1,5 +1,5 @@
 window.ck= (function(_d){
-    
+
     var _video  = _d.getElementById('video'),
         _canvas = _d.getElementById('canvas'),
         _ctx    = _canvas.getContext('2d'),
