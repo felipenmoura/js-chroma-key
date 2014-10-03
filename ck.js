@@ -6,26 +6,39 @@ window.ck= (function(_d){
         _n      = navigator,
         _w      = window,
         _width  = 0,
-        _height = 0;
+        _height = 0,
+        // criamos um canvas virtual
+        _tmpCtx = _d.createElement('canvas');
     
+    // e setamos nele, os valores do canvas real
+    _tmpCtx.width= _canvas.offsetWidth;
+    _tmpCtx.height= _canvas.offsetHeight;
+    // pegando seu context
+    _tmpCtx= _tmpCtx.getContext('2d');
     
-    // função executada para cada quadro
     var _videoPlaying= function(){
         
         var frame= '',
-            data= null;
+            data= null,
+            // criamos algumas variáveis como helpers
+            l,
+            r, g, b;
         
-        // na primeira vez, pega as dimenções do video
         if(!_width){
             _width= _video.offsetWidth;
             _height= _video.offsetHeight;
         }
         
-        _ctx.drawImage(_video, 0, 0, _width, _height);
-        //_ctx.drawImage(_video, -200, -200, _width + 400, _height + 400);
+        // desenhamos no canvas virtual (melhor performance para o processamento)
+        _tmpCtx.drawImage(_video, 0, 0, _width, _height);
+        
+        // frame, torna-se os dados da imagem no canvas(pixel a pixel)
+        frame= _tmpCtx.getImageData(0, 0, _width, _height);
+        
+        // jogamos estes pixels no canvas real
+        _ctx.putImageData(frame, 0, 0);
         
     };
-    //
     
     var _constructor= function(){
         
@@ -46,8 +59,6 @@ window.ck= (function(_d){
                 _video.src= stream;
                 _video.play();
                 
-                // atualizamos o canvas a cada quadro
-                //requestAnimationFrame(_videoPlaying);
                 setInterval(_videoPlaying, 60);
                 
             }, function(){
