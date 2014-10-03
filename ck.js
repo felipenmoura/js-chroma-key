@@ -8,9 +8,7 @@ window.ck= (function(_d){
         _width  = 0,
         _height = 0,
         _tmpCtx = _d.createElement('canvas'),
-        // criamos uma cor, que trataremos
         _colors = [0, 0, 200],
-        // distância aceita, entre um tom de cor e outro
         _range  = 80;
     
     _tmpCtx.width= _canvas.offsetWidth;
@@ -41,14 +39,12 @@ window.ck= (function(_d){
             g= data[l*4+1];
             b= data[l*4+2];
             
-            // caso o tom atual da cor, esteja dentro do range
             if(Math.abs(r - _colors[0]) < 250 - _range
                 &&
                Math.abs(g - _colors[1]) < 250 - _range
                 &&
                Math.abs(b - _colors[2]) < 250 - _range)
             {
-                // colocamos seu alpha como 0 (invisível)
                 frame.data[l*4+3]= 0;
             }
         }
@@ -77,6 +73,11 @@ window.ck= (function(_d){
                 _video.play();
                 
                 setInterval(_videoPlaying, 60);
+                
+                // vamos usar o input range para definir a distância aceita
+                _d.getElementById('range').addEventListener('change', function(){
+                    _range= 255 - this.value;
+                });
                 
             }, function(){
                 alert('O usuário não permitiu!');
