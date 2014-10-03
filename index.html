@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <title>Chroma key using JavaScript</title>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-        <script type="text/javascript">        var _gaq = _gaq || [];        _gaq.push(['_setAccount', 'UA-1270869-17']);        _gaq.push(['_setDomainName', '.felipenmoura.org']);        _gaq.push(['_trackPageview']);        (function() {        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);        })();    </script>
         <style type="text/css">
             canvas{
                 display: block;
@@ -26,19 +26,24 @@
     </head>
     <body>
         <div style="text-align: center;">
+            
             <input type="button" value="Start" onclick="window.ck.start();" /><br/>
+            
             <video id="video" autoplay="autoplay" style="position: absolute; top: -999px;" width="360" height="270"></video>
-            <canvas id="canvas" width="360" height="270"></canvas>
-            <br/><br/>
-            <!--<input id="range" type="range" value="100" min="10" max="255" />-->
+            
+            <canvas id="canvas" width="360" height="270"></canvas><br/>
+            
             <input id="range" type="range" value="100" min="0" max="255" />
+            
         </div>
-	<div style='width: 400px; margin: auto; margin-top: 20px;'>
-		<em>- Click the Start buttono and allow the page to use your camera;</em><br/>
-		<em>- Click the image to capture the current pixel;</em><br/>
-		<em>- Use the slider to change the sensitivity;</em><br/>
-		<em>- See the code or fork it at <a href='https://github.com/felipenmoura/js-chroma-key/'>Github's Felipe N. Moura projects list</a>;</em><br/>
-	</div>
+        
+        <div style='width: 400px; margin: auto; margin-top: 20px;'>
+            <em>- Click the Start buttono and allow the page to use your camera;</em><br/>
+            <em>- Click the image to capture the current pixel;</em><br/>
+            <em>- Use the slider to change the sensitivity;</em><br/>
+            <em>- See the code or fork it at <a href='https://github.com/felipenmoura/js-chroma-key/'>Github</a>;</em><br/>
+        </div>
+        
         <script src="ck.js"></script>
         
     </body>
