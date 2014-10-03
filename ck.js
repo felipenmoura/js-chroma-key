@@ -7,13 +7,14 @@ window.ck= (function(_d){
         _w      = window,
         _width  = 0,
         _height = 0,
-        // criamos um canvas virtual
-        _tmpCtx = _d.createElement('canvas');
+        _tmpCtx = _d.createElement('canvas'),
+        // criamos uma cor, que trataremos
+        _colors = [0, 0, 200],
+        // distância aceita, entre um tom de cor e outro
+        _range  = 80;
     
-    // e setamos nele, os valores do canvas real
     _tmpCtx.width= _canvas.offsetWidth;
     _tmpCtx.height= _canvas.offsetHeight;
-    // pegando seu context
     _tmpCtx= _tmpCtx.getContext('2d');
     
     var _videoPlaying= function(){
@@ -32,17 +33,24 @@ window.ck= (function(_d){
         
         frame= _tmpCtx.getImageData(0, 0, _width, _height);
         
-        // coletamos as informações dos pixels do canvas
         data= frame.data;
         
-        // cada pixel, possui 4 bites, e estão em uma lista única
         l= data.length/4;
         while(l--){
             r= data[l*4];
             g= data[l*4+1];
             b= data[l*4+2];
-            // a= data[l*4+3]; // poderíamos usar o alpha, mas não é o caso neste momento
-            // aqui, r, g e b vao de 0 a 255
+            
+            // caso o tom atual da cor, esteja dentro do range
+            if(Math.abs(r - _colors[0]) < 250 - _range
+                &&
+               Math.abs(g - _colors[1]) < 250 - _range
+                &&
+               Math.abs(b - _colors[2]) < 250 - _range)
+            {
+                // colocamos seu alpha como 0 (invisível)
+                frame.data[l*4+3]= 0;
+            }
         }
         
         _ctx.putImageData(frame, 0, 0);
