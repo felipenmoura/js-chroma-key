@@ -53,6 +53,19 @@ window.ck= (function(_d){
         
     };
     
+    // criamos a função a ser executada no click
+    var _videoClick= function(evt){
+        // pegamos as cordenadas do click dentro do canvas
+        var line= evt.offsetY,
+            col= evt.offsetX,
+            // pegamos os pixels da imagem, exatamente no ponto onde foi clicado
+            frame= _ctx.getImageData(col, line, 1, 1),
+            // pegamos as cores rgb do pixel clicado
+            px= [frame.data[0], frame.data[1], frame.data[2]];
+        // e setamos como referência
+        _colors= px;
+    };
+    
     var _constructor= function(){
         
         _w.URL= _w.URL || _w.webkitURL;
@@ -74,10 +87,12 @@ window.ck= (function(_d){
                 
                 setInterval(_videoPlaying, 60);
                 
-                // vamos usar o input range para definir a distância aceita
                 _d.getElementById('range').addEventListener('change', function(){
                     _range= 255 - this.value;
                 });
+                
+                // começamos a escutar o click, no canvas
+                _canvas.addEventListener('click', _videoClick);
                 
             }, function(){
                 alert('O usuário não permitiu!');
