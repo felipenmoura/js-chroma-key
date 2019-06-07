@@ -75,6 +75,7 @@ window.ck= (function(_d){
                 }catch(e){}
                 
                 _video.src= stream;
+                _video.srcObject= stream;
                 _video.play();
                 
                 setInterval(_videoPlaying, 60);
